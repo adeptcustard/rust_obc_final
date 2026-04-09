@@ -1,4 +1,5 @@
 // OBC State
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum OBCMode {
     Normal,
     Safe
@@ -29,7 +30,8 @@ impl OBCState {
 }
 
 // Power Stats
-pub enum PowerMode {
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum PowerStatus {
     Normal,
     LowPower,
     Critical
@@ -37,8 +39,7 @@ pub enum PowerMode {
 pub struct PowerState{
     pub battery_voltage: f32,
     pub battery_current: f32,
-    pub battery_temp: f32,
-    pub mode: PowerMode,
+    pub mode: PowerStatus,
     pub charging: bool
 }
 impl PowerState {
@@ -46,8 +47,7 @@ impl PowerState {
         Self {
             battery_voltage: 4.0,
             battery_current: 0.0,
-            battery_temp: 20.0,
-            mode: PowerMode::Normal,
+            mode: PowerStatus::Normal,
             charging: true
         }
     }
@@ -57,14 +57,16 @@ impl PowerState {
 pub struct TempsState {
     pub obc_board: f32,
     pub radio: f32,
-    pub payload: f32
+    pub payload: f32,
+    pub battery: f32
 }
 impl TempsState {
     pub fn new() -> Self {
         Self {
             obc_board: 20.0,
             radio: 20.0,
-            payload: 20.0
+            payload: 20.0,
+            battery: 20.0
         }
     }
 }
@@ -88,6 +90,7 @@ impl CommsState {
 }
 
 // Payload Stats
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum PayloadStatus{
     Idle,
     Busy,
@@ -107,6 +110,7 @@ impl PayloadState {
 }
 
 // ADCS Stats
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ADCSStatus {
     Detumble,
     Nominal,
