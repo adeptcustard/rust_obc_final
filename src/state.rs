@@ -40,7 +40,8 @@ pub struct PowerState{
     pub battery_voltage: f32,
     pub battery_current: f32,
     pub mode: PowerStatus,
-    pub charging: bool
+    pub charging: bool,
+    pub solar_input: f32
 }
 impl PowerState {
     pub fn new() -> Self {
@@ -48,7 +49,8 @@ impl PowerState {
             battery_voltage: 4.0,
             battery_current: 0.0,
             mode: PowerStatus::Normal,
-            charging: true
+            charging: true,
+            solar_input: 0.0
         }
     }
 }

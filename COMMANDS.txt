@@ -1,0 +1,74 @@
+OBC TLV Command Reference
+=========================
+
+Format: [TYPE] [LENGTH] [VALUE]
+
+0x01 - System Commands
+----------------------
+01 00        Shutdown runtime
+01 01 00     Enter NORMAL mode
+01 01 01     Enter SAFE mode
+
+0x02 - Telemetry Commands
+-------------------------
+02 01 00     Full system telemetry
+02 01 01     Power telemetry
+02 01 02     Temperature telemetry
+02 01 03     Comms telemetry
+02 01 04     Payload telemetry
+02 01 05     ADCS telemetry
+02 01 06     Dump warning/error logs to error_dump.txt
+
+0x03 - Comms Commands
+---------------------
+03 01 00     Disable radio
+03 01 01     Enable radio
+03 01 02     Switch to transmitting
+03 01 03     Switch to receiving
+03 01 04     Reset radio
+
+0x04 - Payload Commands
+-----------------------
+04 01 00     Disable payload
+04 01 01     Enable payload
+04 01 02     Start payload capture
+04 01 03     Stop payload capture
+04 01 04     Clear payload buffer
+
+0x05 - ADCS Commands
+--------------------
+05 01 00     Disable ADCS
+05 01 01     Enable ADCS
+05 01 02     Detumble mode
+05 01 03     Sun-pointing
+05 01 04     Nadir-pointing
+05 01 05     Safe-pointing
+
+0x06 - Fault Management
+-----------------------
+06 01 00     Clear all faults
+06 01 01     Reset all subsystems
+06 01 02     Reset comms
+06 01 03     Reset payload
+06 01 04     Reset ADCS
+
+0x07 - Fault Injection
+----------------------
+07 01 00     Bit flip simulation
+07 01 01     Memory corruption
+07 01 02     Buffer overflow test
+07 01 03     Race condition test
+07 01 04     Stack corruption test
+07 01 05     Null pointer test
+07 01 06     Subsystem failure
+07 01 07     Packet corruption
+
+0x08 - Storage Commands
+-----------------------
+08 00        Dump storage
+08 01 00     Clear storage
+08 01 01     Write test data
+08 01 02     Corrupt storage
+08 01 03     Restore storage defaults
+
+
