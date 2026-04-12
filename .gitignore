@@ -1,2 +1,6 @@
 /target
 /.idea
+
+obc_runtime.log
+error_dump.txt
+obc_memory.txt

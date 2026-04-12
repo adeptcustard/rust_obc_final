@@ -42,7 +42,7 @@ pub fn update_comms(state: &mut OBCState, dt_ms: u64) {
 }
 
 pub fn update_payload(state: &mut OBCState) {
-    if state.payload.payload_on == true {
+    if state.payload.payload_on {
         state.payload.status = crate::state::PayloadStatus::Busy;
     } else {
         state.payload.status = crate::state::PayloadStatus::Idle;

@@ -23,6 +23,12 @@ use crate::post::run_post;
 use crate::state::{OBCMode, OBCState};
 use crate::subsystems::update_subsystems;
 
+fn persist_state(state: &OBCState, last_packet: &str) {
+    if let Err(e) = storage::write_state(state, last_packet) {
+        logger::error(&format!("Storage write failed: {e}"));
+    }
+}
+
 fn main() {
     let mut state = OBCState::new();
     let mut seq: u32 = 0;
@@ -41,7 +47,7 @@ fn main() {
         logger::error(&format!("Storage init failed: {e}"));
     }
 
-    let tick_ms: u64 = 1000;
+    const TICK_MS: u64 = 1000;
     let (tx, rx) = mpsc::channel::<String>();
 
     std::thread::spawn(move || loop {
@@ -72,12 +78,10 @@ fn main() {
             state.mode, state.power.battery_voltage, state.comms.rssi
         ));
 
-        let input = match rx.recv_timeout(Duration::from_millis(tick_ms)) {
+        let input = match rx.recv_timeout(Duration::from_millis(TICK_MS)) {
             Ok(line) => line,
             Err(mpsc::RecvTimeoutError::Timeout) => {
-                if let Err(e) = storage::write_state(&state, &last_packet) {
-                    logger::error(&format!("Storage write failed: {e}"));
-                }
+                persist_state(&state, &last_packet);
                 continue;
             }
             Err(mpsc::RecvTimeoutError::Disconnected) => {
@@ -89,9 +93,7 @@ fn main() {
         let trimmed = input.trim();
 
         if trimmed.is_empty() {
-            if let Err(e) = storage::write_state(&state, &last_packet) {
-                logger::error(&format!("Storage write failed: {e}"));
-            }
+            persist_state(&state, &last_packet);
             continue;
         }
 
@@ -138,8 +140,6 @@ fn main() {
 
         seq = seq.wrapping_add(1);
 
-        if let Err(e) = storage::write_state(&state, &last_packet) {
-            logger::error(&format!("Storage write failed: {e}"));
-        }
+        persist_state(&state, &last_packet);
     }
 }
